@@ -1,0 +1,38 @@
+[server]
+bind = "127.0.0.1:3000"
+static_dir = "/tmp/factorio-seasons-test/static"
+public_url = ""
+
+[factorio]
+binary = "./factorio/bin/x64/factorio"
+saves_dir = "./factorio/saves"
+archive_dir = "/tmp/factorio-seasons-test/archive"
+data_dir = "/tmp/factorio-seasons-test/data"
+rcon_host = "127.0.0.1"
+rcon_port = 27015
+rcon_pw_file = "/tmp/factorio-seasons-test/rcon.pw"
+map_gen_settings = "./factorio/data/map-gen-settings.json"
+server_settings = "./factorio/data/server-settings.json"
+factorio_version = "2.0.28"
+
+[eth]
+rpc_url = "http://localhost:8545"
+deposit_address = "0x0000000000000000000000000000000000000000"
+base_fee_wei = "333333333333333"
+
+[schedule]
+rotation_day = "Monday"
+rotation_hour = 4
+season_duration_days = 30
+hardcore = true
+rebuy_multiplier = 2
+
+[admin]
+token = "test-admin-token"
+
+[database]
+url = "sqlite:///tmp/factorio-seasons-test/seasons.db?mode=rwc"
+
+[logging]
+level = "info"
+format = "pretty"

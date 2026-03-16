@@ -1,0 +1,8 @@
+{
+  "name": "spectator-control",
+  "version": "1.0.0",
+  "title": "Spectator Control",
+  "author": "factorio-seasons",
+  "factorio_version": "2.0",
+  "description": "Permission-based spectator enforcement for seasonal server. Managed via RCON by the factorio-seasons backend."
+}

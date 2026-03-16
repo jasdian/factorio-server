@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Seasons // Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0c0c10;--panel:#14141c;--panel2:#1a1a24;--brd:#2a2a38;
+  --cu:#e87a1e;--cug:rgba(232,122,30,.3);--cud:#a05515;
+  --grn:#52b788;--yel:#fca311;--red:#e63946;
+  --txt:#b8b8c4;--dim:#5a5a6a;
+  --f:'Share Tech Mono','Courier New',monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--f);background:var(--bg);color:var(--txt);min-height:100vh;line-height:1.6}
+body::before{content:'';position:fixed;inset:0;background:
+  repeating-linear-gradient(0deg,transparent,transparent 39px,rgba(255,255,255,.02) 39px,rgba(255,255,255,.02) 40px),
+  repeating-linear-gradient(90deg,transparent,transparent 39px,rgba(255,255,255,.02) 39px,rgba(255,255,255,.02) 40px);
+  pointer-events:none;z-index:0}
+body::after{content:'';position:fixed;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,var(--cu),transparent);z-index:100}
+main{position:relative;z-index:1;max-width:900px;margin:0 auto;padding:2rem 1rem 4rem}
+
+header{text-align:center;margin-bottom:2rem;padding:1.5rem 0}
+header h1{font-size:clamp(1.3rem,4vw,1.8rem);color:var(--cu);letter-spacing:.15em;
+  text-transform:uppercase;text-shadow:0 0 30px var(--cug)}
+header .sub{font-size:.7rem;color:var(--dim);letter-spacing:.3em;text-transform:uppercase;margin-top:.2rem}
+
+.panel{background:var(--panel);border:1px solid var(--brd);margin-bottom:1.5rem;
+  position:relative;animation:fadeIn .4s ease both}
+.panel:nth-child(2){animation-delay:.07s}
+.panel:nth-child(3){animation-delay:.14s}
+.panel::before,.panel::after{content:'';position:absolute;width:10px;height:10px}
+.panel::before{top:-1px;left:-1px;border-top:2px solid var(--cu);border-left:2px solid var(--cu)}
+.panel::after{bottom:-1px;right:-1px;border-bottom:2px solid var(--cu);border-right:2px solid var(--cu)}
+
+.ph{padding:.55rem 1rem;border-bottom:1px solid var(--brd);background:var(--panel2);
+  display:flex;align-items:center;gap:.5rem}
+.ph h2{font-size:.8rem;letter-spacing:.15em;text-transform:uppercase;color:var(--cu)}
+.dot{width:6px;height:6px;border-radius:50%}
+.dot-g{background:var(--grn);box-shadow:0 0 6px var(--grn)}
+.dot-r{background:var(--red);box-shadow:0 0 6px var(--red)}
+.pb{padding:1.2rem}
+
+label{display:block;font-size:.7rem;color:var(--dim);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.25rem}
+input[type="text"],input[type="password"],input[type="number"],select{
+  width:100%;padding:.55rem .7rem;font-family:var(--f);font-size:.85rem;
+  color:var(--txt);background:var(--bg);border:1px solid var(--brd);outline:none;
+  margin-bottom:.9rem;transition:border-color .2s}
+input:focus,select:focus{border-color:var(--cu);box-shadow:0 0 8px var(--cug)}
+input::placeholder{color:var(--dim)}
+
+input[type="checkbox"]{appearance:none;width:34px;min-width:34px;height:18px;background:var(--brd);
+  border-radius:9px;position:relative;cursor:pointer;transition:background .2s;vertical-align:middle;flex-shrink:0}
+input[type="checkbox"]::after{content:'';position:absolute;top:2px;left:2px;width:14px;height:14px;
+  background:var(--dim);border-radius:50%;transition:all .2s}
+input[type="checkbox"]:checked{background:var(--cu)}
+input[type="checkbox"]:checked::after{left:18px;background:#fff}
+
+button{font-family:var(--f);font-size:.8rem;letter-spacing:.1em;text-transform:uppercase;
+  padding:.6rem 1.3rem;cursor:pointer;border:1px solid var(--cu);
+  background:linear-gradient(180deg,var(--cu),var(--cud));color:#fff;transition:all .2s}
+button:hover:not(:disabled){box-shadow:0 0 15px var(--cug);filter:brightness(1.1)}
+button:disabled{opacity:.5;cursor:not-allowed}
+button.secondary{background:transparent;color:var(--cu);padding:.3rem .7rem;font-size:.72rem}
+button.secondary:hover:not(:disabled){background:rgba(232,122,30,.1)}
+button.danger{border-color:var(--red);background:linear-gradient(180deg,var(--red),#b02a33)}
+button.danger:hover:not(:disabled){box-shadow:0 0 15px rgba(230,57,70,.3)}
+
+.row{display:flex;gap:.8rem;align-items:end}
+.row input{flex:1;margin-bottom:0}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:0 1rem}
+.sw{display:flex;align-items:center;gap:.5rem;margin-top:1.3rem;font-size:.8rem}
+.sw input{margin:0}
+.filters{display:flex;gap:1rem;margin-bottom:1rem;flex-wrap:wrap}
+.filters label{flex:1;min-width:120px}
+.filters select{margin-bottom:0}
+
+details{margin-bottom:1.2rem}
+summary{cursor:pointer;color:var(--cu);font-size:.75rem;letter-spacing:.1em;
+  text-transform:uppercase;padding:.3rem 0;list-style:none}
+summary::-webkit-details-marker{display:none}
+summary::before{content:'\25B8 '}
+details[open] summary::before{content:'\25BE '}
+
+table{width:100%;border-collapse:collapse;font-size:.75rem}
+th{text-align:left;font-size:.65rem;color:var(--dim);letter-spacing:.1em;text-transform:uppercase;
+  padding:.45rem;border-bottom:1px solid var(--brd)}
+td{padding:.45rem;border-bottom:1px solid rgba(255,255,255,.03)}
+tr:hover td{background:rgba(232,122,30,.03)}
+code{font-family:var(--f);font-size:.85em;color:var(--cu);background:var(--bg);padding:.1em .3em}
+
+.s-ok{color:var(--grn)}.s-wait{color:var(--yel)}.s-no{color:var(--red)}
+.fb-ok{color:var(--grn);font-size:.75rem}.fb-err{color:var(--red);font-size:.75rem}
+.hidden{display:none!important}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:600px){.g2{grid-template-columns:1fr}.row{flex-direction:column}
+  main{padding:1rem .5rem 3rem}}
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <h1>SEASONS // <span id="hdr-sn">S??</span></h1>
+    <div class="sub">Factory Control Terminal</div>
+  </header>
+
+  <section class="panel" id="auth-panel">
+    <div class="ph"><span class="dot dot-r"></span><h2>Access Terminal</h2></div>
+    <div class="pb">
+      <label for="admin-token">Admin Token</label>
+      <div class="row">
+        <input type="password" id="admin-token" placeholder="Enter admin token">
+        <button id="auth-btn">Connect</button>
+      </div>
+      <small id="auth-fb"></small>
+    </div>
+  </section>
+
+  <div id="dash" class="hidden">
+
+    <section class="panel">
+      <div class="ph"><span class="dot dot-g"></span><h2>Promo Codes</h2></div>
+      <div class="pb">
+        <details>
+          <summary>Create New Promo</summary>
+          <form id="promo-form">
+            <div class="g2">
+              <div><label>Code<input type="text" id="p-code" required maxlength="32" placeholder="e.g. FREEWEEK"></label></div>
+              <div><label>Discount %<input type="number" id="p-disc" required min="0" max="100" value="100"></label></div>
+            </div>
+            <div class="g2">
+              <div><label>Max Uses (blank = unlimited)<input type="number" id="p-max" min="1" placeholder="unlimited"></label></div>
+              <div><div class="sw"><input type="checkbox" id="p-instant"><label style="margin:0">Grants Instant Player</label></div></div>
+            </div>
+            <button type="submit">Create Promo</button>
+            <span id="promo-fb"></span>
+          </form>
+        </details>
+        <table><thead>
+          <tr><th>Code</th><th>Discount</th><th>Instant</th><th>Uses</th><th>Active</th><th></th></tr>
+        </thead><tbody id="promo-tbody"><tr><td colspan="6">Loading...</td></tr></tbody></table>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="ph"><span class="dot dot-g"></span><h2>Registrations</h2></div>
+      <div class="pb">
+        <input type="text" id="f-search" placeholder="Search name, ID, promo..." style="margin-bottom:.8rem">
+        <div class="filters">
+          <label>Season<select id="f-season"><option value="">All</option></select></label>
+          <label>Status<select id="f-status">
+            <option value="">All</option>
+            <option value="awaiting_payment">Awaiting Payment</option>
+            <option value="confirmed">Confirmed</option>
+            <option value="expired">Expired</option>
+          </select></label>
+        </div>
+        <table><thead>
+          <tr><th>ID</th><th>Player</th><th>Season</th><th>Status</th><th>Tier</th><th>Amount</th><th>Promo</th><th>Updated</th><th></th></tr>
+        </thead><tbody id="reg-tbody"><tr><td colspan="9">Loading...</td></tr></tbody></table>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="ph"><span class="dot dot-r"></span><h2>Season Rotation</h2></div>
+      <div class="pb">
+        <p style="font-size:.85rem;margin-bottom:1rem;color:var(--dim)">
+          Force an immediate season rotation. Archives current season, carries forward players, generates a fresh map.</p>
+        <button class="danger" id="rotate-btn">Force Rotate Season</button>
+        <span id="rotate-fb"></span>
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<script src="admin.js"></script>
+</body>
+</html>

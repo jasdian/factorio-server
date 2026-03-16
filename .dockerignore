@@ -1,0 +1,10 @@
+target/
+factorio/
+.git/
+.claude/
+tests/
+test-config.toml
+scripts/
+shell.nix
+mods/
+*.md

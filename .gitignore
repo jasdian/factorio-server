@@ -1,0 +1,5 @@
+/target
+factorio/
+config.prod.toml
+rcon.pw
+.env

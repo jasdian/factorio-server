@@ -1,0 +1,37 @@
+services:
+  backend:
+    build: .
+    container_name: factorio-seasons
+    restart: unless-stopped
+    environment:
+      VIRTUAL_HOST: factorio.example.com
+      LETSENCRYPT_HOST: factorio.example.com
+      LETSENCRYPT_EMAIL: email@example.com
+      VIRTUAL_PORT: "3000"
+    pid: host
+    expose:
+      - "3000"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - db-data:/data/db
+      - archive-data:/data/archive
+      - /opt/factorio:/opt/factorio
+      - /run/systemd:/run/systemd
+      - /run/dbus/system_bus_socket:/run/dbus/system_bus_socket
+      - ./config.prod.toml:/app/config.toml:ro
+      - ./rcon.pw:/run/secrets/rcon.pw:ro
+    logging:
+      driver: json-file
+      options:
+        max-size: "4m"
+        max-file: "10"
+
+volumes:
+  db-data:
+  archive-data:
+
+networks:
+  default:
+    name: nging-proxy-external
+    external: true

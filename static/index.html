@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Factorio Seasons</title>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0c0c10;--panel:#14141c;--panel2:#1a1a24;--brd:#2a2a38;
+  --cu:#e87a1e;--cug:rgba(232,122,30,.3);--cud:#a05515;
+  --grn:#52b788;--yel:#fca311;--red:#e63946;
+  --txt:#b8b8c4;--dim:#5a5a6a;
+  --f:'Share Tech Mono','Courier New',monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--f);background:var(--bg);color:var(--txt);min-height:100vh;line-height:1.6}
+body::before{content:'';position:fixed;inset:0;background:
+  repeating-linear-gradient(0deg,transparent,transparent 39px,rgba(255,255,255,.02) 39px,rgba(255,255,255,.02) 40px),
+  repeating-linear-gradient(90deg,transparent,transparent 39px,rgba(255,255,255,.02) 39px,rgba(255,255,255,.02) 40px);
+  pointer-events:none;z-index:0}
+body::after{content:'';position:fixed;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,var(--cu),transparent);z-index:100}
+main{position:relative;z-index:1;max-width:720px;margin:0 auto;padding:2rem 1rem 4rem}
+
+header{text-align:center;margin-bottom:2.5rem;padding:1.5rem 0}
+header h1{font-size:clamp(1.5rem,5vw,2.2rem);color:var(--cu);letter-spacing:.15em;
+  text-transform:uppercase;text-shadow:0 0 30px var(--cug)}
+header .sub{font-size:.75rem;color:var(--dim);letter-spacing:.3em;text-transform:uppercase;margin-top:.25rem}
+
+.panel{background:var(--panel);border:1px solid var(--brd);margin-bottom:1.5rem;
+  position:relative;animation:fadeIn .4s ease both}
+.panel:nth-child(2){animation-delay:.07s}
+.panel:nth-child(3){animation-delay:.14s}
+.panel:nth-child(4){animation-delay:.21s}
+.panel::before,.panel::after{content:'';position:absolute;width:10px;height:10px}
+.panel::before{top:-1px;left:-1px;border-top:2px solid var(--cu);border-left:2px solid var(--cu)}
+.panel::after{bottom:-1px;right:-1px;border-bottom:2px solid var(--cu);border-right:2px solid var(--cu)}
+
+.ph{padding:.55rem 1rem;border-bottom:1px solid var(--brd);background:var(--panel2);
+  display:flex;align-items:center;gap:.5rem}
+.ph h2{font-size:.8rem;letter-spacing:.15em;text-transform:uppercase;color:var(--cu)}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--grn);box-shadow:0 0 6px var(--grn)}
+.pb{padding:1.2rem}
+
+.stats{display:flex;gap:1.2rem;margin-bottom:1rem}
+.stat{text-align:center;flex:1;padding:.7rem;background:var(--bg);border:1px solid var(--brd)}
+.stat .v{display:block;font-size:1.8rem;color:var(--cu);text-shadow:0 0 15px var(--cug);line-height:1.2}
+.stat .l{font-size:.65rem;color:var(--dim);letter-spacing:.2em;text-transform:uppercase}
+
+.cb{text-align:center;padding:.7rem;background:var(--bg);border:1px solid var(--brd)}
+.cb .l{font-size:.65rem;color:var(--dim);letter-spacing:.2em;text-transform:uppercase;margin-bottom:.2rem}
+.cd{font-size:clamp(1.3rem,4vw,1.9rem);color:var(--cu);text-shadow:0 0 20px var(--cug);letter-spacing:.08em}
+
+label{display:block;font-size:.7rem;color:var(--dim);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.25rem}
+input[type="text"]{width:100%;padding:.55rem .7rem;font-family:var(--f);font-size:.85rem;
+  color:var(--txt);background:var(--bg);border:1px solid var(--brd);outline:none;
+  margin-bottom:.9rem;transition:border-color .2s}
+input:focus{border-color:var(--cu);box-shadow:0 0 8px var(--cug)}
+input::placeholder{color:var(--dim)}
+small{display:block;font-size:.7rem;color:var(--dim);margin-top:-.6rem;margin-bottom:.7rem}
+
+button{font-family:var(--f);font-size:.8rem;letter-spacing:.1em;text-transform:uppercase;
+  padding:.6rem 1.3rem;cursor:pointer;border:1px solid var(--cu);
+  background:linear-gradient(180deg,var(--cu),var(--cud));color:#fff;transition:all .2s}
+button:hover:not(:disabled){box-shadow:0 0 15px var(--cug);filter:brightness(1.1)}
+button:disabled{opacity:.5;cursor:not-allowed}
+
+table{width:100%;border-collapse:collapse;font-size:.78rem}
+th{text-align:left;font-size:.65rem;color:var(--dim);letter-spacing:.1em;text-transform:uppercase;
+  padding:.45rem;border-bottom:1px solid var(--brd)}
+td{padding:.45rem;border-bottom:1px solid rgba(255,255,255,.03)}
+tr:hover td{background:rgba(232,122,30,.03)}
+code{font-family:var(--f);font-size:.85em;color:var(--cu);background:var(--bg);padding:.1em .3em}
+a{color:var(--cu);text-decoration:none}
+a:hover{text-decoration:underline}
+
+.s-ok{color:var(--grn)}.s-wait{color:var(--yel)}.s-no{color:var(--red)}
+.badge{display:inline-block;padding:.1em .45em;font-size:.72rem;letter-spacing:.05em;border:1px solid}
+.badge-p{color:var(--grn);border-color:var(--grn)}
+.badge-s{color:var(--yel);border-color:var(--yel)}
+.hidden{display:none!important}
+.msg{padding:.8rem;border:1px solid var(--brd);background:var(--bg);margin-top:1rem}
+.msg.err{border-color:var(--red)}.msg.ok{border-color:var(--grn)}
+.msg p{margin-bottom:.3rem}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:500px){.stats{flex-direction:column;gap:.7rem}main{padding:1rem .5rem 3rem}}
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <h1>Factorio Seasons</h1>
+    <div class="sub">Automated Seasonal Server</div>
+  </header>
+
+  <section class="panel">
+    <div class="ph"><span class="dot"></span><h2 id="s-title">Current Season</h2></div>
+    <div class="pb">
+      <div class="stats">
+        <div class="stat"><span class="v" id="p-count">-</span><span class="l">Players</span></div>
+        <div class="stat"><span class="v" id="sp-count">-</span><span class="l">Spectators</span></div>
+        <div class="stat"><span class="v" id="f-version">-</span><span class="l">Factorio</span></div>
+      </div>
+      <div class="cb"><div class="l">Season Ends In</div><div class="cd" id="countdown">--:--:--</div></div>
+    </div>
+  </section>
+
+  <section class="panel">
+    <div class="ph"><h2>Register</h2></div>
+    <div class="pb">
+      <div id="reg-fee-info" class="cb" style="margin-bottom:1rem"><span class="l">Registration Fee</span><div class="cd" id="reg-fee" style="font-size:1.1rem">-</div></div>
+      <form id="reg-form">
+        <label for="f_name">Factorio Username</label>
+        <input type="text" id="f_name" required maxlength="50" placeholder="YourFactorioName">
+        <label for="f_promo">Promo Code (optional)</label>
+        <input type="text" id="f_promo" placeholder="e.g. FREEWEEK">
+        <div id="eth-field">
+          <label for="f_eth">Ethereum Wallet Address</label>
+          <input type="text" id="f_eth" placeholder="0x..." pattern="0x[0-9a-fA-F]{40}">
+          <small>Your wallet address for sending the registration payment</small>
+        </div>
+        <button type="submit" id="reg-btn">Register</button>
+      </form>
+      <div id="reg-result" class="hidden"></div>
+    </div>
+  </section>
+
+  <section class="panel">
+    <div class="ph"><h2>Check Registration</h2></div>
+    <div class="pb">
+      <form id="chk-form">
+        <label for="reg_id">Registration ID</label>
+        <input type="text" id="reg_id" required placeholder="Enter your UUID">
+        <button type="submit">Check Status</button>
+      </form>
+      <div id="chk-result" class="hidden"></div>
+    </div>
+  </section>
+
+  <section class="panel">
+    <div class="ph"><h2>Season History</h2></div>
+    <div class="pb">
+      <table><thead>
+        <tr><th>Season</th><th>Status</th><th>Started</th><th>Ended</th><th>Map</th></tr>
+      </thead><tbody id="s-tbody"><tr><td colspan="5">Loading...</td></tr></tbody></table>
+    </div>
+  </section>
+</main>
+
+<script src="index.js"></script>
+</body>
+</html>
